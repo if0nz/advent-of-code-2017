@@ -1,7 +1,8 @@
 package it.ifonz.puzzle;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import it.ifonz.common.ArrayConverters;
 
 public class Day2 {
 
@@ -12,32 +13,26 @@ public class Day2 {
 		
 		for (String row : args) {
 			// init row
-			String[] elements = row.split(",");
-			List<Integer> ints = new ArrayList<Integer>();
-			for (String element : elements) ints.add(Integer.valueOf(element));
+			List<Integer> ints = ArrayConverters.asIntegerList(row.split(","));
 			ints.sort(Integer::compare);
 			int size = ints.size();
 			
 			// part 1
-			Integer min = ints.get(0);
-			Integer max = ints.get(size-1);
-			sumP1+=(max-min);
+			sumP1+=(ints.get(size-1)-ints.get(0)); // max - min
 			
 			// part 2
 			boolean found = false; // stop condition
 			// outer loop iterates from min value
-			for (int i = 0; i < size; i++) {
+			for (int i = 0; i < size && !found; i++) {
 				Integer valueAtI = ints.get(i);
 				// inner loop iterates from max value
-				for (int j = size-1; j > i; j--) {
+				for (int j = size-1; j > i && !found; j--) {
 					Integer valueAtJ = ints.get(j);
 					if (valueAtJ%valueAtI == 0) {
 						sumP2+=(valueAtJ/valueAtI);
 						found = true;
-						break;
 					}
 				}
-				if (found) break;
 			}
 			
 		}
