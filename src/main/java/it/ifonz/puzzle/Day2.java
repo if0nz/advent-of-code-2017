@@ -1,6 +1,6 @@
 package it.ifonz.puzzle;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import it.ifonz.common.ArrayConverters;
 
@@ -13,7 +13,7 @@ public class Day2 {
 		
 		for (String row : args) {
 			// init row
-			List<Integer> ints = ArrayConverters.asIntegerList(row.split(","));
+			ArrayList<Integer> ints = ArrayConverters.asIntegerArrayList(row.split(","));
 			ints.sort(Integer::compare);
 			int size = ints.size();
 			

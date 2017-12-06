@@ -1,41 +1,35 @@
 package it.ifonz.puzzle;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.function.Function;
 
 import it.ifonz.common.ArrayConverters;
 
 public class Day5 {
 
 	public static void main(String[] args) {
-
-		List<Integer> intsP1 = ArrayConverters.asIntegerList(args);
-		List<Integer> intsP2 = ArrayConverters.asIntegerList(args);
 		
-		int stepsP1 = 0;
-		int stepsP2 = 0;
+		ArrayList<Integer> ints = ArrayConverters.asIntegerArrayList(args);
+		
+		System.out.println("part 1:"+jump(ints, (n -> n+1)));
+		System.out.println("part 2:"+jump(ints, (n -> n < 3 ? n+1 : n-1)));
+		
+	}
+	
+	public static int jump(ArrayList<Integer> ints, Function<Integer, Integer> offset) {
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<Integer> clone = (ArrayList<Integer>) ints.clone(); // in order to avoid side-effects on the input
+		int size = clone.size();
 		int i = 0;
-		int j = 0;
-		
-		int size = intsP1.size();
-		
-		while (i >= 0 && i < size || j >= 0 && j < size) {
-			if (i >= 0 && i < size) {
-				int jumpsP1 = intsP1.get(i);
-				intsP1.set(i, jumpsP1+1);
-				i += jumpsP1;
-				stepsP1++;
-			}
-			
-			if (j >= 0 && j < size) {
-				int jumpsP2 = intsP2.get(j);
-				intsP2.set(j, jumpsP2 < 3 ? jumpsP2+1 : jumpsP2-1);
-				j += jumpsP2;
-				stepsP2++;
-			}
+		int steps = 0;
+		while (i >= 0 && i < size) {
+			int jumps = clone.get(i);
+			clone.set(i, offset.apply(jumps));
+			i += jumps;
+			steps++;
 		} 
-		
-		System.out.println("part 1:"+stepsP1);
-		System.out.println("part 2:"+stepsP2);
+		return steps;
 		
 	}
 
