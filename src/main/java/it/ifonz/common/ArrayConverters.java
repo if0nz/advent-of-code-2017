@@ -1,13 +1,13 @@
 package it.ifonz.common;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ArrayConverters {
   
-	public static ArrayList<Integer> asIntegerArrayList(String[] strings) {
-		ArrayList<Integer> ints = new ArrayList<>();
-		Arrays.stream(strings).forEach(s -> ints.add(Integer.valueOf(s)));
+	public static Integer[] asIntegerArray(String[] strings) {
+		Integer[] ints = new Integer[strings.length];
+		Arrays.stream(strings).map(s->Integer.valueOf(s)).collect(Collectors.toList()).toArray(ints);
 		return ints;
 	}
 	

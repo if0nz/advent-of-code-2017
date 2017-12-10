@@ -6,6 +6,17 @@ public class Day3 {
 		
 		long input = Long.valueOf(args[0]);
 		
+		System.out.println("part 1:"+part1(input));
+		System.out.println("part 2:"+part2(input));
+		
+	}
+
+	// test fails if the algoritm will attempt to get a value outside the spiral or it will attempt to sum the generating value to itself
+	private static boolean boundaryTest(int size, int horizontal, int vertical, int x, int y) {
+		return !((x==0 && y==0) || horizontal+x < 0 || horizontal+x >= size || vertical+y < 0 || vertical+y > size-1);
+	}
+	
+	public static int part1(long input) {
 		/*
 		 * P1 can be solved with a close-form expression!
 		 * one can easily check that a spiral full round creates a square which sides' lenght is an odd number
@@ -13,6 +24,8 @@ public class Day3 {
 		 * (2n+1)^2 = input
 		 * n = ceil((sqrt(input)-1)/2) (without loss of generality, we just need the positive value from sqrt)
 		 */
+		
+		if (input == 1) return 0; // spiral's center
 		
 		int n = (int) Math.ceil((Math.sqrt(input)-1)/2);
 		
@@ -33,13 +46,17 @@ public class Day3 {
 		// calculating the distance from the side's center
 		distanceP1+= Math.abs(input-(startingPoint+n));
 		
-		System.out.println("part 1:"+distanceP1);
-		
 		/* one can easily reverse the algorithm to retrieve the following close-form expression :
 		 * ((long) Math.ceil((Math.sqrt(input)-1)/2)) +  Math.abs(input-(((long) Math.pow(2*n-1, 2))+2*k*((long) Math.ceil((Math.sqrt(input)-1)/2))+((long) Math.ceil((Math.sqrt(input)-1)/2))));
 		 */
+		return distanceP1;
 		
+	}
+	
+	public static long part2(long input) {
 		// I wasn't able to find any close-form expression for P2, but this sequence is stored in OEIS :P
+		
+		int n = (int) Math.ceil((Math.sqrt(input)-1)/2);
 		
 		// estimated spiral's size
 		int size=2*n+1;
@@ -80,12 +97,9 @@ public class Day3 {
 			}
 			steps++;
 		}
-		System.out.println("part 2:"+spiral[horizontal][vertical]);
-	}
-
-	// test fails if the algoritm will attempt to get a value outside the spiral of it will attempt to sum the generating value to itself
-	private static boolean boundaryTest(int size, int horizontal, int vertical, int x, int y) {
-		return !((x==0 && y==0) || horizontal+x < 0 || horizontal+x >= size || vertical+y < 0 || vertical+y > size-1);
+		
+		return spiral[horizontal][vertical];
+		
 	}
 
 }

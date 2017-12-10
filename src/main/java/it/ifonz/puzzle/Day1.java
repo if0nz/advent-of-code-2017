@@ -1,33 +1,29 @@
 package it.ifonz.puzzle;
 
+import java.util.stream.IntStream;
+
 public class Day1 {
 
 	public static void main(String[] args) {
 		
-		// same input for both parts
-		char[] input = args[0].toCharArray();
-		
-		System.out.println("part 1 "+sumIfSameDigitForward(input, 1));
-		System.out.println("part 2 "+sumIfSameDigitForward(input, input.length/2));
+		System.out.println("part 1 "+sumIfSameDigitForward(args[0], 1));
+		System.out.println("part 2 "+sumIfSameDigitForward(args[0], args[0].length()/2));
 		
 	}
 
-	private static int sumIfSameDigitForward(char[] charArray, int steps) {
+	public static long sumIfSameDigitForward(String input, int steps) {
 		
-		// init returning sum. if no digit matches the requirements, then the resulting sum will be 0
-		int sum = 0;
+		char[] charArray = input.toCharArray();
 		int length = charArray.length;
 		
-		for (int i = 0; i < length; i++) {
+		return IntStream.range(0, length).mapToLong(i -> {
 			
 			char digit = charArray[i];
 			// % operator allows us to access the array in a circular fashion
 			// hypotesis: every char in the array is in [0-9] range
-			if (digit == charArray[(i+steps)%length]) sum+=(digit-48);
+			return (digit == charArray[(i+steps)%length]) ? (digit-48) : 0;
 			
-		}
-		
-		return sum;
+		}).sum();
 		
 	}
 	

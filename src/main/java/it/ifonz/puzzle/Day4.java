@@ -4,43 +4,36 @@ import java.util.Arrays;
 
 public class Day4 {
 
+	private static int[] primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
+	
 	public static void main(String[] args) {
 	
-		int validsP1 = 0;
-		int validsP2 = 0;
-		for (String passphrase : args) {
+		System.out.println(part1(args));
+		System.out.println(part2(args));
+	}
+	
+	public static int part1(String[] passphrases) {
+		
+		return Arrays.stream(passphrases).mapToInt(passphrase -> {
 			String[] phrases = passphrase.split(",");
-			
-			boolean validP2 = true;
-			boolean validP1 = true;
-			for (int i = 0; i < phrases.length && validP1; i++) {
-				char[] s1Plain = phrases[i].toCharArray();
-				
-				// cloned+sorted array will be tested against part2 requirements
-				char[] s1Sorted = s1Plain.clone();
-				Arrays.sort(s1Sorted);
-				for (int j = i+1; j < phrases.length && validP1; j++) {
-					char[] s2Plain = phrases[j].toCharArray();
-					
-					// cloned+sorted array will be tested against part2 requirements
-					char[] s2Sorted = s2Plain.clone();
-					Arrays.sort(s2Sorted);
-
-					// if two strings are equal then are also anagrams of each other, so p1 requirement will be a halt condition for p2 test
-					validP1 = !Arrays.equals(s1Plain, s2Plain);
-					
-					// a given pair of phrases (s1, s2) included in a passphrase p will be tested if and only if no anagrams have already been found in the prase
-					// otherwise, the passphrase will not pass part2 requirements
-					validP2 = (validP2 && validP1) ? !Arrays.equals(s1Sorted, s2Sorted) : false;
-					
-				}
-			}
-			
-			if (validP1) validsP1++;
-			if (validP2) validsP2++;
-		}
-		System.out.println(validsP1);
-		System.out.println(validsP2);
+			// for each p1, for each p2 such that p1 and p2 are not the same object but are the same string, count 1; otherwise count 0
+			return Arrays.stream(phrases).flatMap(p1 -> Arrays.stream(phrases).filter(p2 -> p1 != p2 && p2.equals(p1)).map(s->s)).findFirst().isPresent() ? 0 : 1;
+		}).sum(); // and sum the bits
+		
 	}
 
+	public static int part2(String[] passphrases) {
+		
+		return Arrays.stream(passphrases).mapToInt(passphrase -> {
+			String[] phrases = passphrase.split(",");
+			// for each p1, for each p2 such that p1 and p2 are not the same object but are anagrams, count 1; otherwise count 0
+			return Arrays.stream(phrases).flatMap(p1 -> Arrays.stream(phrases).filter(p2 -> p1 != p2 && stringHash(p2)==stringHash(p1)).map(s->s)).findFirst().isPresent() ? 0 : 1;
+		}).sum();
+		
+	}
+	
+	private static long stringHash(String s) {
+		// every char in [az] is mapped with a prime number, so two string "hashed" this way must be anagrams
+		return s.chars().reduce(1, (a,b) -> a*primes[b-97]);
+	}
 }
