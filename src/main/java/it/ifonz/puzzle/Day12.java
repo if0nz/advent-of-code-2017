@@ -77,7 +77,7 @@ public class Day12 {
 				q.addAll(graph.get(poll)); // and put its neighbourhood in the queue
 			}
 		}
-		visited.forEach(v -> graph.remove(v)); // remove the connected component from the graph
+		visited.forEach(v -> graph.remove(v)); // removes the connected component from the graph
 		return visited;
 		
 	}
