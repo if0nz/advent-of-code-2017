@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 import it.ifonz.bean.Program;
 import it.ifonz.common.FileReader;
 
-public class Day7 {
+public class Day07 {
 
 	public static void main(String[] args) throws URISyntaxException, IOException {
 		
-		List<String> programs = FileReader.readLines("/d7_input.txt");
+		List<String> programs = FileReader.readLines("/d07_input.txt");
 		
 		System.out.println("part1: "+part1(programs));
 		System.out.println("part2: "+part2(programs));

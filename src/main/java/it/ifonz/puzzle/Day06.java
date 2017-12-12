@@ -9,7 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import it.ifonz.bean.Bank;
 import it.ifonz.common.ArrayConverters;
 
-public class Day6 {
+public class Day06 {
 
 	public static void main(String[] args) {
 

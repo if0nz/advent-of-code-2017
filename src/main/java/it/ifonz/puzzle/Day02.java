@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import it.ifonz.common.ArrayConverters;
 
-public class Day2 {
+public class Day02 {
 
 	public static void main(String[] args) {
 

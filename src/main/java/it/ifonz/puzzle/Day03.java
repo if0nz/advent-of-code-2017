@@ -1,6 +1,6 @@
 package it.ifonz.puzzle;
 
-public class Day3 {
+public class Day03 {
 
 	public static void main(String[] args) {
 		

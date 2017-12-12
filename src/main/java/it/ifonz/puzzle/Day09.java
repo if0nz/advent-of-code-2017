@@ -6,11 +6,11 @@ import java.net.URISyntaxException;
 import it.ifonz.bean.ParserReport;
 import it.ifonz.common.FileReader;
 
-public class Day9 {
+public class Day09 {
 
 	public static void main(String[] args) throws URISyntaxException, IOException {
 
-		String input = FileReader.readLines("/d9_input.txt").get(0);
+		String input = FileReader.readLines("/d09_input.txt").get(0);
 		System.out.println("part 1: "+part1(input));
 		System.out.println("part 2: "+part2(input));
 		

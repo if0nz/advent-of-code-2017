@@ -1,11 +1,11 @@
 package it.ifonz.puzzle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static it.ifonz.puzzle.Day1.sumIfSameDigitForward;
+import static it.ifonz.puzzle.Day01.sumIfSameDigitForward;
 
 import org.junit.jupiter.api.Test;
 
-class Day1Test {
+class Day01Test {
 
 	@Test
 	void testSumIfSameDigitForward() {

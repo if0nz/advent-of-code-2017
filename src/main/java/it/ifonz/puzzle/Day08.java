@@ -12,11 +12,11 @@ import javax.script.ScriptException;
 import it.ifonz.bean.Memory;
 import it.ifonz.common.FileReader;
 
-public class Day8 {
+public class Day08 {
 
 	public static void main(String[] args) throws URISyntaxException, IOException {
 
-		List<String> instructions = FileReader.readLines("/d8_input.txt");
+		List<String> instructions = FileReader.readLines("/d08_input.txt");
 		System.out.println("part 1: "+part1(instructions));
 		System.out.println("part 2: "+part2(instructions));
 		

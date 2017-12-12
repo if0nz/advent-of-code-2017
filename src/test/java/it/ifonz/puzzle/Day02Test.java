@@ -3,9 +3,9 @@ package it.ifonz.puzzle;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import static it.ifonz.puzzle.Day2.*
+import static it.ifonz.puzzle.Day02.*
 ;
-class Day2Test {
+class Day02Test {
 
 	@Test
 	void testPart1() {

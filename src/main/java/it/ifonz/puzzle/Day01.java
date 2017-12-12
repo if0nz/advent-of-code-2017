@@ -2,7 +2,7 @@ package it.ifonz.puzzle;
 
 import java.util.stream.IntStream;
 
-public class Day1 {
+public class Day01 {
 
 	public static void main(String[] args) {
 		

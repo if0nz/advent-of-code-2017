@@ -2,49 +2,58 @@ package it.ifonz.puzzle;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
 
 public class Day11 {
 
+	private static HashMap<String, long[]> hops;
+
+	// recommended reading:
+	// http://keekerdc.com/2011/03/hexagon-grids-coordinate-systems-and-distance-calculations/
+
+	// movement rules
+	static {
+		hops = new HashMap<>();
+		hops.put("n", new long[] { -1, 0, 1 });
+		hops.put("ne", new long[] { -1, 1, 0 });
+		hops.put("se", new long[] { 0, 1, -1 });
+		hops.put("s", new long[] { 1, 0, -1 });
+		hops.put("sw", new long[] { 1, -1, 0 });
+		hops.put("nw", new long[] { 0, -1, 1 });
+	}
+
 	public static void main(String[] args) {
-		
-		System.out.println("part 1: "+part1(args));
-		System.out.println("part 2: "+part2(args));
-		
+
+		System.out.println("part 1: " + part1(args[0]));
+		System.out.println("part 2: " + part2(args[0]));
+
 	}
 
-	private static long part1(String[] args) {
-		String[] movements = args[0].split(",");
+	public static long part1(String movements) {
 
-		
-		long x = Math.abs(Arrays.stream(movements).filter(m -> m.equals("s") || m.equals("sw")).count() -  Arrays.stream(movements).filter(m -> m.equals("n") || m.equals("ne")).count());
-		long y = Math.abs(Arrays.stream(movements).filter(m -> m.equals("ne") || m.equals("se")).count() -  Arrays.stream(movements).filter(m -> m.equals("nw") || m.equals("sw")).count());
-		long z = Math.abs(Arrays.stream(movements).filter(m -> m.equals("nw") || m.equals("n")).count() -  Arrays.stream(movements).filter(m -> m.equals("se") || m.equals("s")).count());
-		
-		return Math.max(Math.max(x,y),z);
+		return Arrays.stream(Arrays.stream(movements.split(",")) // read the input
+				.map(m -> hops.get(m)) // map into movement rules
+				.reduce(new long[] { 0, 0, 0 }, // begins from grid's origin
+						(a, b) -> IntStream.range(0, 3) // for i = 0 to 2
+								.mapToLong(i -> a[i] + b[i]) // update coord i according to its movement rule
+								.toArray() // wrap the 3 coords into the accumulation array
+		)).max().getAsLong(); // get the distance from the origin
+
 	}
-	
-	public static long part2(String[] args) {
-		HashMap<String, int[]> m = new HashMap<>();
-		m.put("n", new int[]{-1,0,1});
-		m.put("ne", new int[]{-1,1,0});
-		m.put("se", new int[]{0,1,-1});
-		m.put("s", new int[]{1,0,-1});
-		m.put("sw", new int[]{1,-1,0});
-		m.put("nw", new int[]{0,-1,1});
-		long currentX = 0;
-		long currentY = 0;
-		long currentZ = 0;
-		long maxDist = 0;
+
+	public static long part2(String movements) {
+
+		AtomicLong maxDist = new AtomicLong(0); // trolling lambda's scope
 		
-		for (String movement : args[0].split(",")) {
-			int[] shift = m.get(movement);
-			currentX+=shift[0];
-			currentY+=shift[1];
-			currentZ+=shift[2];
-			long max = Math.max(Math.max(currentX, currentY), currentZ);
-			maxDist = Math.max(maxDist, max);
-		}
-		return maxDist;
+		Arrays.stream(movements.split(",")).map(m -> hops.get(m)).reduce(new long[] { 0, 0, 0 }, (a, b) -> { // I'm using the accumulator as the current position
+			long[] array = IntStream.range(0, 3).mapToLong(i -> a[i] + b[i]).toArray();
+			maxDist.set(Math.max(maxDist.get(), Arrays.stream(array).max().getAsLong())); // compare max distance to current distance
+			return array; // update the accumulator
+		});
+
+		return maxDist.get();
+		
 	}
 
 }
