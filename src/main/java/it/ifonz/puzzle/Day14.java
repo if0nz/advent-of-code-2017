@@ -1,13 +1,11 @@
 package it.ifonz.puzzle;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 public class Day14 {
 
-	public static void main(String[] args) throws URISyntaxException, IOException {
+	public static void main(String[] args) {
 
 		String input = args[0];
 

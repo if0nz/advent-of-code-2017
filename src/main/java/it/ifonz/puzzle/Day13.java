@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import it.ifonz.common.FileReader;
@@ -14,8 +16,8 @@ public class Day13 {
 
 		List<String> input = FileReader.readLines("/d13_input.txt");
 
-		System.out.println(part1(input));
-		System.out.println(part2(input));
+		System.out.println("part 1: "+part1(input));
+		System.out.println("part 2: "+part2(input));
 
 	}
 
@@ -32,15 +34,18 @@ public class Day13 {
 	}
 
 	public static long part2(List<String> input) {
+		long begin = System.currentTimeMillis();
 		HashMap<Integer, Integer> firewall = createFirewall(input);
 		AtomicInteger delay = new AtomicInteger(0);
 		// same logic, but the packet reaches layer N after N+delay steps
 		// if at least ONE layer catches the packet, then increment the delay
 		// and retest again
-		while (firewall.entrySet().stream()
+		Set<Entry<Integer, Integer>> entrySet = firewall.entrySet();
+		while (entrySet.stream()
 				.anyMatch(e -> (delay.get() + e.getKey().intValue()) % (2 * (e.getValue().intValue() - 1)) == 0)) {
 			delay.incrementAndGet();
 		}
+		System.out.println(System.currentTimeMillis()-begin);
 		return delay.get();
 
 	}

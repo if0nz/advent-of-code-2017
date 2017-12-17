@@ -1,51 +1,52 @@
 package it.ifonz.puzzle;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
 
 public class Day15 {
 
-	public static void main(String[] args) throws URISyntaxException, IOException {
-
-		int s1 = Integer.valueOf(args[0]);
-		int s2 = Integer.valueOf(args[1]);
-		System.out.println("part 1 " + part1(s1, s2));
-		System.out.println("part 2 " + part2(s1, s2));
+	public static void main(String[] args) {
+		int n1 = Integer.valueOf(args[0]);
+		int n2 = Integer.valueOf(args[1]);
+		
+		System.out.println("part 1 " + part1(n1, n2));
+		System.out.println("part 2 " + part2(n1, n2));
 	}
 
-	public static int part1(int s1, int s2) {
+	public static long part1(int s1, int s2) {
 
-		long p1 = s1;
-		long p2 = s2;
-		int c = 0;
-		for (int i = 0; i < 40000000; i++) {
-			p1 = (p1 * 16807) % 2147483647;
-			p2 = (p2 * 48271) % 2147483647;
-			if ((p1 & 65535) == (p2 & 65535))
-				c++;
-		}
-		return c;
+		AtomicLong p1 = new AtomicLong(s1);
+		AtomicLong p2 = new AtomicLong(s2);
 
+		return IntStream.range(0, 40000000).filter(i -> {
+			p1.set(next(p1.get(), 16807));
+			p2.set(next(p2.get(), 48271));
+			return (p1.get() & 65535) == (p2.get() & 65535); // & (2^16 - 1) takes the 16 less significative bits
+		}).count();
 	}
 
-	public static int part2(int s1, int s2) {
+	public static long part2(int s1, int s2) {
 
-		long p1 = s1;
-		long p2 = s2;
-		int c = 0;
-		for (int i = 0; i < 5000000; i++) {
-			do {
-				p1 = (p1 * 16807) % 2147483647;
-			} while (p1 % 4 != 0);
-			do {
-				p2 = (p2 * 48271) % 2147483647;
-			} while (p2 % 8 != 0);
-
-			if ((p1 & 65535) == (p2 & 65535))
-				c++;
-		}
-		return c;
+		AtomicLong p1 = new AtomicLong(s1);
+		AtomicLong p2 = new AtomicLong(s2);
+		return IntStream.range(0, 5000000).filter(i -> {
+			p1.set(nextPart2(p1.get(), 16807, 3));
+			p2.set(nextPart2(p2.get(), 48271, 7));
+			return (p1.get() & 65535) == (p2.get() & 65535); // & (2^16 - 1) takes the 16 less significative bits
+		}).count();
 
 	}
 
+	private static long next(long prev, int factor) {
+		long product = prev * factor;
+		long bitShifted = (product & 0x7fffffff) + (product >> 31); // by puzzle's spec, the product must be reduced mod 2^32 - 1
+		return bitShifted >> 31 > 0 ? bitShifted - 0x7fffffff : bitShifted;
+	}
+
+	private static long nextPart2(long n, int factor, int bitMod) {
+		do {
+			n = next(n, factor);
+		} while ((n & bitMod) != 0); // & 3 is equivalent to mod 4, & 7 is equivalent to mod 8
+		return n;
+	}
 }
